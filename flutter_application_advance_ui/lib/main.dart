@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_advance_ui/data.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 void main() {
   runApp(const MyApp());
@@ -54,7 +55,6 @@ class HomeScreen extends StatelessWidget {
     final textTheme = themeData.textTheme;
 
     final stories = AppDatabase.stories;
-    final categories = AppDatabase.categories;
 
     return Scaffold(
       body: SafeArea(
@@ -89,103 +89,143 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               // List of stories
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 150,
-                child: ListView.builder(
-                    itemCount: stories.length,
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
-                    itemBuilder: (context, index) {
-                      final storyData = stories[index];
-                      return Container(
-                        margin: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                        child: Column(
-                          children: [
-                            Stack(
-                              children: [
-                                Container(
-                                  width: 68,
-                                  height: 68,
-                                  decoration: const BoxDecoration(
-                                      gradient: LinearGradient(
-                                          colors: [
-                                            Color(0xff376AED),
-                                            Color(0xff49B0E2),
-                                            Color(0xff9CECFB),
-                                          ],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomCenter),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(24))),
-                                  child: Container(
-                                    margin: const EdgeInsets.all(3),
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(20),
-                                      ),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Image.asset(
-                                          'assets/img/stories/${storyData.imageFileName}'),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 0,
-                                  bottom: 0,
-                                  child: Image.asset(
-                                    'assets/img/icons/${storyData.iconFileName}',
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Text(
-                              storyData.name,
-                              style: textTheme.bodyText2,
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
-              ),
+              _StoriesList(stories: stories, textTheme: textTheme),
               //list categories
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 270,
-                child: ListView.builder(
-                    itemCount: categories.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      final category = categories[index];
-                      return Container(
-                        width: 236,
-                        height: 250,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        margin: const EdgeInsets.fromLTRB(24, 0, 24, 0),
-                        child: Image.asset(
-                          'assets/img/posts/large/${category.imageFileName}',
-                          width: 236,
-                          height: 244,
-                        ),
-                      );
-                    }),
-              )
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _StoriesList extends StatelessWidget {
+  const _StoriesList({
+    Key? key,
+    required this.stories,
+    required this.textTheme,
+  }) : super(key: key);
+
+  final List<StoryData> stories;
+  final TextTheme textTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 150,
+      child: ListView.builder(
+          itemCount: stories.length,
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
+          itemBuilder: (context, index) {
+            final storyData = stories[index];
+            return _Story(storyData: storyData, textTheme: textTheme);
+          }),
+    );
+  }
+}
+
+class _Story extends StatelessWidget {
+  const _Story({
+    Key? key,
+    required this.storyData,
+    required this.textTheme,
+  }) : super(key: key);
+
+  final StoryData storyData;
+  final TextTheme textTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              (storyData.isViewed)
+                  ? _profileImageViewed()
+                  : _profileImageNormal(),
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: Image.asset(
+                  'assets/img/icons/${storyData.iconFileName}',
+                  width: 24,
+                  height: 24,
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Text(
+            storyData.name,
+            style: textTheme.bodyText2,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _profileImageViewed() {
+    return DottedBorder(
+      borderType: BorderType.RRect,
+      radius: const Radius.circular(24),
+      strokeWidth: 2,
+      strokeCap: StrokeCap.butt,
+      dashPattern: const [8, 3],
+      color: const Color(0xff7B8BB2),
+      child: Container(
+        width: 68,
+        height: 68,
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(24))),
+        child: Container(
+          padding: const EdgeInsets.all(6),
+          //  decoration: const BoxDecoration(
+          //   color: Colors.white,
+          //   borderRadius: BorderRadius.all(
+          //     Radius.circular(22),
+          //   ),
+          // ),
+          child: _imageStory(),
+        ),
+      ),
+    );
+  }
+
+  Container _profileImageNormal() {
+    return Container(
+      width: 68,
+      height: 68,
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(colors: [
+            Color(0xff376AED),
+            Color(0xff49B0E2),
+            Color(0xff9CECFB),
+          ], begin: Alignment.topLeft, end: Alignment.bottomCenter),
+          borderRadius: BorderRadius.all(Radius.circular(24))),
+      child: Container(
+        margin: const EdgeInsets.all(2),
+        padding: const EdgeInsets.all(6),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(
+            Radius.circular(22),
+          ),
+        ),
+        child: _imageStory(),
+      ),
+    );
+  }
+
+  Widget _imageStory() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(18),
+      child: Image.asset('assets/img/stories/${storyData.imageFileName}'),
     );
   }
 }
