@@ -54,6 +54,7 @@ class HomeScreen extends StatelessWidget {
     final textTheme = themeData.textTheme;
 
     final stories = AppDatabase.stories;
+    final categories = AppDatabase.categories;
 
     return Scaffold(
       body: SafeArea(
@@ -61,6 +62,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              //Name and icon
               Padding(
                 padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
                 child: Row(
@@ -78,6 +80,7 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              //Explore today's
               Padding(
                 padding: const EdgeInsets.fromLTRB(32, 0, 32, 24),
                 child: Text(
@@ -85,6 +88,7 @@ class HomeScreen extends StatelessWidget {
                   style: textTheme.headline6,
                 ),
               ),
+              // List of stories
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 150,
@@ -149,6 +153,31 @@ class HomeScreen extends StatelessWidget {
                               style: textTheme.bodyText2,
                             ),
                           ],
+                        ),
+                      );
+                    }),
+              ),
+              //list categories
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 270,
+                child: ListView.builder(
+                    itemCount: categories.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      final category = categories[index];
+                      return Container(
+                        width: 236,
+                        height: 250,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        margin: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                        child: Image.asset(
+                          'assets/img/posts/large/${category.imageFileName}',
+                          width: 236,
+                          height: 244,
                         ),
                       );
                     }),

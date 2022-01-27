@@ -92,6 +92,12 @@ class AppDatabase {
           imageFileName: 'story_2.jpg',
           iconFileName: 'category_3.png',
           isViewed: false),
+      StoryData(
+          id: 1009,
+          name: 'David',
+          imageFileName: 'story_5.jpg',
+          iconFileName: 'category_4.png',
+          isViewed: false),
     ];
   }
 
