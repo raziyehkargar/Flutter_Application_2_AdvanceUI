@@ -2,13 +2,13 @@ library carousel_slider;
 
 import 'dart:async';
 
-import 'package:carousel_slider/carousel_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'carousel_controller.dart';
 import 'carousel_options.dart';
+import 'carousel_state.dart';
 import 'utils.dart';
 
 export 'carousel_controller.dart';
