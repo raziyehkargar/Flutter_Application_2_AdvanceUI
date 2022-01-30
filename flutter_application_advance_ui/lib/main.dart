@@ -17,12 +17,25 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const primaryTextColor = Color(0xff0D253C);
     const secondryTextColor = Color(0xff2D4379);
+    const primaryColor = Color(0xff376AED);
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
         primarySwatch: Colors.blue,
-
+        primaryColor: primaryColor,
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            textStyle: MaterialStateProperty.all(
+              const TextStyle(
+                fontFamily: defaultFontFamilyEN,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: primaryColor,
+              ),
+            ),
+          ),
+        ),
         textTheme: const TextTheme(
             subtitle1: TextStyle(
                 fontFamily: defaultFontFamilyEN,
@@ -33,6 +46,12 @@ class MyApp extends StatelessWidget {
               fontFamily: defaultFontFamilyEN,
               fontWeight: FontWeight.w700,
               color: primaryTextColor,
+            ),
+            headline5: TextStyle(
+              fontFamily: defaultFontFamilyEN,
+              fontWeight: FontWeight.w700,
+              color: primaryTextColor,
+              fontSize: 20,
             ),
             headline4: TextStyle(
               fontFamily: defaultFontFamilyEN,
@@ -97,6 +116,8 @@ class HomeScreen extends StatelessWidget {
               _StoriesList(stories: stories, textTheme: textTheme),
               //list categories
               _CategoriesList(),
+              //list of postes
+              _PostList(),
             ],
           ),
         ),
@@ -328,6 +349,36 @@ class _Story extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(17),
       child: Image.asset('assets/img/stories/${storyData.imageFileName}'),
+    );
+  }
+}
+
+class _PostList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 24, left: 32),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('latest News', style: themeData.textTheme.headline5),
+              TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    'More',
+                    style: TextStyle(
+                      color: themeData.primaryColor,
+                    ),
+                  )),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
