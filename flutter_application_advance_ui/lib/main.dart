@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_advance_ui/carousel/carousel_slider.dart';
 import 'package:flutter_application_advance_ui/data.dart';
@@ -42,6 +43,11 @@ class MyApp extends StatelessWidget {
                 fontSize: 18,
                 fontWeight: FontWeight.w200,
                 color: secondryTextColor),
+            subtitle2: TextStyle(
+                fontFamily: defaultFontFamilyEN,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: secondryTextColor),
             headline6: TextStyle(
               fontFamily: defaultFontFamilyEN,
               fontWeight: FontWeight.w700,
@@ -83,6 +89,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -118,6 +125,9 @@ class HomeScreen extends StatelessWidget {
               _CategoriesList(),
               //list of postes
               _PostList(),
+              const SizedBox(
+                height: 16,
+              )
             ],
           ),
         ),
@@ -356,6 +366,7 @@ class _Story extends StatelessWidget {
 class _PostList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final postsList = AppDatabase.posts;
     final ThemeData themeData = Theme.of(context);
 
     return Column(
@@ -378,7 +389,130 @@ class _PostList extends StatelessWidget {
             ],
           ),
         ),
+        ListView.builder(
+          physics: const ClampingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          itemExtent: 149,
+          shrinkWrap: true,
+          itemCount: postsList.length,
+          itemBuilder: (context, index) {
+            final post = postsList[index];
+            return _PostItem(post: post, themeData: themeData);
+          },
+        ),
       ],
+    );
+  }
+}
+
+class _PostItem extends StatelessWidget {
+  const _PostItem({
+    Key? key,
+    required this.post,
+    required this.themeData,
+  }) : super(key: key);
+
+  static const double radius = 16;
+  final PostData post;
+  final ThemeData themeData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(32, 8, 32, 8),
+      height: 149,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(radius),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x1a5282FF),
+            blurRadius: 10,
+          )
+        ],
+      ),
+      child: Row(
+        children: [
+          ClipRRect(
+              borderRadius: BorderRadius.circular(radius),
+              child:
+                  Image.asset('assets/img/posts/small/${post.imageFileName}')),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    post.caption,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: themeData.primaryColor,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    post.title,
+                    style: themeData.textTheme.subtitle2,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        CupertinoIcons.hand_thumbsup,
+                        size: 20,
+                        color: themeData.textTheme.bodyText2!.color,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        post.likes,
+                        style: themeData.textTheme.bodyText2,
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Icon(
+                        CupertinoIcons.time,
+                        size: 20,
+                        color: themeData.textTheme.bodyText2!.color,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        post.time,
+                        style: themeData.textTheme.bodyText2,
+                      ),
+                      post.isBookmarked
+                          ? Expanded(
+                              child: Container(
+                                alignment: Alignment.centerRight,
+                                child: Icon(
+                                  CupertinoIcons.bookmark,
+                                  size: 20,
+                                  color: themeData.primaryColor,
+                                ),
+                              ),
+                            )
+                          : Container(),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
