@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_advance_ui/carousel/carousel_slider.dart';
 import 'package:flutter_application_advance_ui/data.dart';
 import 'package:dotted_border/dotted_border.dart';
 
@@ -95,9 +96,109 @@ class HomeScreen extends StatelessWidget {
               // List of stories
               _StoriesList(stories: stories, textTheme: textTheme),
               //list categories
+              _CategoriesList(),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _CategoriesList extends StatelessWidget {
+  final List<Category> categories = AppDatabase.categories;
+
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider.builder(
+        itemCount: categories.length,
+        itemBuilder: (context, index, realIndex) {
+          final category = categories[realIndex];
+          return _CategoryItem(
+              category: category,
+              left: realIndex == 0 ? 32 : 8,
+              right: realIndex == categories.length - 1 ? 32 : 8);
+        },
+        options: CarouselOptions(
+          viewportFraction: 0.8,
+          aspectRatio: 1.2,
+          initialPage: 0,
+          disableCenter: true,
+          enlargeCenterPage: true,
+          enableInfiniteScroll: false,
+          autoPlay: false,
+          enlargeStrategy: CenterPageEnlargeStrategy.height,
+        ));
+  }
+}
+
+class _CategoryItem extends StatelessWidget {
+  final double left;
+  final double right;
+  const _CategoryItem({
+    Key? key,
+    required this.category,
+    required this.left,
+    required this.right,
+  }) : super(key: key);
+
+  static const double radius = 32;
+  final Category category;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(left, 0, right, 0),
+      child: Stack(
+        children: [
+          //Shadow under container
+          Positioned.fill(
+            left: 65,
+            right: 65,
+            bottom: 20,
+            top: 100,
+            child: Container(
+              decoration: const BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Color(0xaa0D253C),
+                  blurRadius: 20,
+                )
+              ]),
+            ),
+          ),
+          Positioned.fill(
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(0, 0, 8, 16),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(radius),
+              ),
+              foregroundDecoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xff0D253C), Colors.transparent],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.center,
+                  ),
+                  borderRadius: BorderRadius.circular(radius)),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(radius),
+                child: Image.asset(
+                  'assets/img/posts/large/${category.imageFileName}',
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+              bottom: 48,
+              left: 32,
+              child: Text(
+                category.title,
+                style: Theme.of(context).textTheme.headline6!.apply(
+                      color: Colors.white,
+                    ),
+              ))
+        ],
       ),
     );
   }
