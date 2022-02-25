@@ -1,10 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_advance_ui/carousel/carousel_slider.dart';
 import 'package:flutter_application_advance_ui/data.dart';
 import 'package:dotted_border/dotted_border.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.white,
+    systemNavigationBarIconBrightness: Brightness.dark,
+    statusBarColor: Colors.white,
+    statusBarIconBrightness: Brightness.dark
+  ));
   runApp(const MyApp());
 }
 
@@ -531,7 +538,7 @@ class _PostItem extends StatelessWidget {
 class _BottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 85,
       child: Stack(
         children: [
@@ -546,7 +553,7 @@ class _BottomNavigation extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 20,
-                    color: const Color(0x2D2D2D).withOpacity(0.14),
+                    color:  const Color(0x2D2D2D).withOpacity(0.14),
                   )
                 ],
               ),
@@ -584,8 +591,10 @@ class _BottomNavigation extends StatelessWidget {
                 height: 65,
                 child: Image.asset('assets/img/icons/plus.png'),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(32.5),
-                    color: Theme.of(context).primaryColor),
+                  borderRadius: BorderRadius.circular(32.5),
+                  color: Theme.of(context).primaryColor,
+                  border: Border.all(color: Colors.white, width: 4),
+                ),
               ),
             ),
           ),
@@ -612,7 +621,7 @@ class _BottomNavigationItem extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset('assets/img/icons/${iconFileName}'),
+        Image.asset('assets/img/icons/$iconFileName'),
         const SizedBox(height: 4),
         Text(
           title,
