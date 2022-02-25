@@ -69,13 +69,18 @@ class MyApp extends StatelessWidget {
               fontFamily: defaultFontFamilyEN,
               color: secondryTextColor,
               fontSize: 12,
+            ),
+            caption: TextStyle(
+              fontFamily: defaultFontFamilyEN,
+              fontWeight: FontWeight.w700,
+              fontSize: 10,
+              color: Color(0xff788882),
             )),
       ),
       home: Stack(
         children: [
           const Positioned.fill(child: HomeScreen()),
-          Positioned(bottom: 0,right: 0,
-            left: 0, child: _BottomNavigation()),
+          Positioned(bottom: 0, right: 0, left: 0, child: _BottomNavigation()),
         ],
       ),
     );
@@ -536,24 +541,84 @@ class _BottomNavigation extends StatelessWidget {
             left: 0,
             child: Container(
               height: 65,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 20,
+                    color: const Color(0x2D2D2D).withOpacity(0.14),
+                  )
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: const [
+                  _BottomNavigationItem(
+                      iconFileName: 'Home.png',
+                      activeIconFileName: 'Home.png',
+                      title: 'Home'),
+                  _BottomNavigationItem(
+                      iconFileName: 'Articles.png',
+                      activeIconFileName: 'Articles.png',
+                      title: 'Articles'),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  _BottomNavigationItem(
+                      iconFileName: 'Menu.png',
+                      activeIconFileName: 'Menu.png',
+                      title: 'Menu'),
+                  _BottomNavigationItem(
+                      iconFileName: 'Search.png',
+                      activeIconFileName: 'Search.png',
+                      title: 'Search'),
+                ],
               ),
             ),
           ),
           Center(
             child: Container(
-              width: 65,
-              height: 65,
-              child: Image.asset('assets/img/icons/plus.png'),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(32.5),
-                color: Theme.of(context).primaryColor),
-                 
+              alignment: Alignment.topCenter,
+              child: Container(
+                width: 65,
+                height: 65,
+                child: Image.asset('assets/img/icons/plus.png'),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(32.5),
+                    color: Theme.of(context).primaryColor),
+              ),
             ),
-          )
+          ),
         ],
       ),
+    );
+  }
+}
+
+class _BottomNavigationItem extends StatelessWidget {
+  final String iconFileName;
+  final String activeIconFileName;
+  final String title;
+
+  const _BottomNavigationItem(
+      {Key? key,
+      required this.iconFileName,
+      required this.activeIconFileName,
+      required this.title})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/img/icons/${iconFileName}'),
+        const SizedBox(height: 4),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.caption,
+        ),
+      ],
     );
   }
 }
