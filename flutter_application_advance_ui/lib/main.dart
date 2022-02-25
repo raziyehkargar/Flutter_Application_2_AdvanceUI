@@ -71,7 +71,13 @@ class MyApp extends StatelessWidget {
               fontSize: 12,
             )),
       ),
-      home: const HomeScreen(),
+      home: Stack(
+        children: [
+          const Positioned.fill(child: HomeScreen()),
+          Positioned(bottom: 0,right: 0,
+            left: 0, child: _BottomNavigation()),
+        ],
+      ),
     );
   }
 }
@@ -511,6 +517,41 @@ class _PostItem extends StatelessWidget {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BottomNavigation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 85,
+      child: Stack(
+        children: [
+          Positioned(
+            right: 0,
+            bottom: 0,
+            left: 0,
+            child: Container(
+              height: 65,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: 65,
+              height: 65,
+              child: Image.asset('assets/img/icons/plus.png'),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(32.5),
+                color: Theme.of(context).primaryColor),
+                 
+            ),
+          )
         ],
       ),
     );
