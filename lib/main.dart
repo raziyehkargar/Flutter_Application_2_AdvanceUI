@@ -4,14 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_application_advance_ui/carousel/carousel_slider.dart';
 import 'package:flutter_application_advance_ui/data.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter_application_advance_ui/gen/assets.gen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.white,
-    systemNavigationBarIconBrightness: Brightness.dark,
-    statusBarColor: Colors.white,
-    statusBarIconBrightness: Brightness.dark
-  ));
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark));
   runApp(const MyApp());
 }
 
@@ -121,8 +121,7 @@ class HomeScreen extends StatelessWidget {
                       'Hi, Jonathan!',
                       style: textTheme.subtitle1,
                     ),
-                    Image.asset(
-                      'assets/img/icons/notification.png',
+                    Assets.img.icons.notification.image(
                       width: 32,
                       height: 32,
                     ),
@@ -553,7 +552,7 @@ class _BottomNavigation extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 20,
-                    color:  const Color(0x2D2D2D).withOpacity(0.14),
+                    color: const Color(0x2D2D2D).withOpacity(0.14),
                   )
                 ],
               ),
