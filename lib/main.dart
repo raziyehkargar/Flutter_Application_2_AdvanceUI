@@ -29,7 +29,14 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
-        primarySwatch: Colors.blue,
+        colorScheme: const ColorScheme.light(
+          primary: primaryColor,
+          onPrimary: Colors.white,
+          surface: Colors.white,
+          onSurface: primaryTextColor,
+          background: Color(0xfffBFBFF),
+          onBackground: primaryTextColor,
+        ),
         primaryColor: primaryColor,
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
