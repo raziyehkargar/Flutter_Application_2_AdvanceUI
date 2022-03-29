@@ -148,4 +148,23 @@ class AppDatabase {
           imageFileName: 'small_post_3.jpg'),
     ];
   }
+
+  static List<OnBoardingData> get onBoardingItems {
+    List<OnBoardingData> items = [];
+    for (int i = 0; i < 5; i++) {
+      items.add(OnBoardingData(
+        title: "Read the article you want instantly",
+        description:
+            "You can read thousands of articles on Blog Club, save them in the application and share them with your loved ones.",
+      ));
+    }
+    return items;
+  }
+}
+
+class OnBoardingData {
+  final String title;
+  final String description;
+
+  OnBoardingData({required this.title, required this.description});
 }
