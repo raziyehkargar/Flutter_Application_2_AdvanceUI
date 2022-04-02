@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_advance_ui/auth.dart';
 import 'package:flutter_application_advance_ui/data.dart';
 import 'package:flutter_application_advance_ui/gen/assets.gen.dart';
 import 'package:flutter_application_advance_ui/home.dart';
@@ -106,7 +107,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const HomeScreen()));
+                                          const AuthScreen()));
                             } else {
                               _pageContoller.animateToPage(
                                 ++page,
