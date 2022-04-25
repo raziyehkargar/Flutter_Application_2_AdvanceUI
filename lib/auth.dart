@@ -17,7 +17,7 @@ class AuthScreen extends StatelessWidget {
           child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 16, bottom: 16),
+            padding: const EdgeInsets.only(top: 32, bottom: 32),
             child: Assets.img.background.logo.svg(width: 110),
           ),
           Expanded(
@@ -66,13 +66,7 @@ class AuthScreen extends StatelessWidget {
                             decoration:
                                 InputDecoration(label: Text('User name')),
                           ),
-                          const TextField(
-                            obscureText: true,
-                            autocorrect: false,
-                            enableSuggestions: false,
-                            decoration:
-                                InputDecoration(label: Text('Password')),
-                          ),
+                          const PasswordTextField(),
                           const SizedBox(height: 24),
                           ElevatedButton(
                             onPressed: () {},
@@ -88,15 +82,24 @@ class AuthScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('Forgot your password?'),
+                              const Text('Forgot your password?'),
                               TextButton(
                                 onPressed: () {},
-                                child: Text('Reset here'),
+                                child: const Text('Reset here'),
                               ),
                             ],
                           ),
+                          const SizedBox(
+                            height: 16,
+                          ),
                           Center(
-                            child: Text('Or sign in with'.toUpperCase()),
+                            child: Text(
+                              'Or sign in with'.toUpperCase(),
+                              style: const TextStyle(letterSpacing: 2),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 16,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -118,6 +121,41 @@ class AuthScreen extends StatelessWidget {
           ),
         ],
       )),
+    );
+  }
+}
+
+class PasswordTextField extends StatefulWidget {
+  const PasswordTextField({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<PasswordTextField> createState() => _PasswordTextFieldState();
+}
+
+class _PasswordTextFieldState extends State<PasswordTextField> {
+  bool obscureText = true;
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      obscureText: obscureText,
+      autocorrect: false,
+      enableSuggestions: false,
+      decoration: InputDecoration(
+        label: const Text('Password'),
+        suffix: InkWell(
+          onTap: (() {
+            setState(() {
+              obscureText = !obscureText;
+            });
+          }),
+          child: Text(
+            (obscureText) ? 'show' : 'Hide',
+            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          ),
+        ),
+      ),
     );
   }
 }
