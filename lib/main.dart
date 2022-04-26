@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_advance_ui/article.dart';
 import 'package:flutter_application_advance_ui/onboarding.dart';
 import 'package:flutter_application_advance_ui/splash.dart';
 
@@ -38,6 +39,12 @@ class MyApp extends StatelessWidget {
           onBackground: primaryTextColor,
         ),
         primaryColor: primaryColor,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: primaryTextColor,
+          elevation: 0,
+          titleSpacing: 32,
+        ),
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
             textStyle: MaterialStateProperty.all(
@@ -97,7 +104,7 @@ class MyApp extends StatelessWidget {
       //   ],
       // ),
 
-      home: const SplashScreen(),
+      home: const ArticleScreen(),
     );
   }
 }
