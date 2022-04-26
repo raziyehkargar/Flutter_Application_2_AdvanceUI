@@ -59,9 +59,13 @@ class ArticleScreen extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                    onPressed: () {}, icon: Icon(CupertinoIcons.share, color)),
+                    onPressed: () {},
+                    icon: Icon(CupertinoIcons.share,
+                        color: themeData.colorScheme.primary)),
                 IconButton(
-                    onPressed: () {}, icon: Icon(CupertinoIcons.bookmark)),
+                    onPressed: () {},
+                    icon: Icon(CupertinoIcons.bookmark,
+                        color: themeData.colorScheme.primary)),
               ],
             ),
           ),
