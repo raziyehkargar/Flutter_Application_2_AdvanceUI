@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_advance_ui/article.dart';
-import 'package:flutter_application_advance_ui/onboarding.dart';
 import 'package:flutter_application_advance_ui/profile.dart';
-import 'package:flutter_application_advance_ui/splash.dart';
 
 import 'home.dart';
 
@@ -119,16 +117,52 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainScreen extends StatelessWidget {
+const int homeIndex = 0;
+const int articleIndex = 1;
+const int searchIndex = 2;
+const int profileIndex = 3;
+const double bottomNavigationHeight = 65;
+
+class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
   @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int selectedTabIndex = homeIndex;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: _BottomNavigation(),
-      body: IndexedStack(
-        index: 0,
-        children: [],
+      body: Stack(
+        children: [
+          Positioned.fill(
+            bottom: bottomNavigationHeight,
+            child: IndexedStack(
+              index: selectedTabIndex,
+              children: const [
+                HomeScreen(),
+                ArticleScreen(),
+                SearchScreen(),
+                ProfileScreen(),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            left: 0,
+            child: _BottomNavigation(
+              onSelectedTab: (int index) {
+                setState(() {
+                  selectedTabIndex = index;
+                });
+              },
+              selectedIndex: selectedTabIndex,
+            ),
+          )
+        ],
       ),
     );
   }
@@ -139,15 +173,23 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('Search Screen'),
+        child: Text(
+          'Search Screen',
+          style: Theme.of(context).textTheme.headline4,
+        ),
       ),
     );
   }
 }
 
 class _BottomNavigation extends StatelessWidget {
+  final Function(int index) onSelectedTab;
+  final int selectedIndex;
+  const _BottomNavigation(
+      {Key? key, required this.onSelectedTab, required this.selectedIndex})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -159,38 +201,58 @@ class _BottomNavigation extends StatelessWidget {
             bottom: 0,
             left: 0,
             child: Container(
-              height: 65,
+              height: bottomNavigationHeight,
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 20,
-                    color: const Color(0x2D2D2D).withOpacity(0.14),
+                    color: const Color(0xff2D2D2D).withOpacity(0.14),
                   )
                 ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
+                children: [
                   _BottomNavigationItem(
-                      iconFileName: 'Home.png',
-                      activeIconFileName: 'Home.png',
-                      title: 'Home'),
-                  _BottomNavigationItem(
-                      iconFileName: 'Articles.png',
-                      activeIconFileName: 'Articles.png',
-                      title: 'Articles'),
-                  SizedBox(
-                    width: 8,
+                    iconFileName: 'Home.png',
+                    activeIconFileName: 'HomeActive.png',
+                    title: 'Home',
+                    isActive: selectedIndex == homeIndex,
+                    onTap: () {
+                      onSelectedTab(homeIndex);
+                    },
                   ),
                   _BottomNavigationItem(
-                      iconFileName: 'Menu.png',
-                      activeIconFileName: 'Menu.png',
-                      title: 'Menu'),
+                    iconFileName: 'Articles.png',
+                    activeIconFileName: 'ArticlesActive.png',
+                    title: 'Articles',
+                    isActive: selectedIndex == articleIndex,
+                    onTap: () {
+                      onSelectedTab(articleIndex);
+                    },
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
                   _BottomNavigationItem(
-                      iconFileName: 'Search.png',
-                      activeIconFileName: 'Search.png',
-                      title: 'Search'),
+                    iconFileName: 'Search.png',
+                    activeIconFileName: 'SearchActive.png',
+                    title: 'Search',
+                    isActive: selectedIndex == searchIndex,
+                    onTap: () {
+                      onSelectedTab(searchIndex);
+                    },
+                  ),
+                  _BottomNavigationItem(
+                    iconFileName: 'Menu.png',
+                    activeIconFileName: 'MenuActive.png',
+                    title: 'Menu',
+                    isActive: selectedIndex == profileIndex,
+                    onTap: () {
+                      onSelectedTab(profileIndex);
+                    },
+                  ),
                 ],
               ),
             ),
@@ -201,7 +263,7 @@ class _BottomNavigation extends StatelessWidget {
               child: Container(
                 width: 65,
                 height: 65,
-                child: Image.asset('assets/img/icons/plus.png'),
+                child: Image.asset('assets/img/icons/Plus.png'),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(32.5),
                   color: Theme.of(context).primaryColor,
@@ -220,26 +282,42 @@ class _BottomNavigationItem extends StatelessWidget {
   final String iconFileName;
   final String activeIconFileName;
   final String title;
+  final bool isActive;
+  final Function() onTap;
 
-  const _BottomNavigationItem(
-      {Key? key,
-      required this.iconFileName,
-      required this.activeIconFileName,
-      required this.title})
-      : super(key: key);
+  const _BottomNavigationItem({
+    Key? key,
+    required this.iconFileName,
+    required this.activeIconFileName,
+    required this.title,
+    required this.isActive,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset('assets/img/icons/$iconFileName'),
-        const SizedBox(height: 4),
-        Text(
-          title,
-          style: Theme.of(context).textTheme.caption,
+    final themeData = Theme.of(context);
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/img/icons/${isActive ? activeIconFileName : iconFileName}',
+              width: 32,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              title,
+              style: themeData.textTheme.caption!.apply(
+                  color: isActive
+                      ? themeData.colorScheme.primary
+                      : themeData.textTheme.caption!.color),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
