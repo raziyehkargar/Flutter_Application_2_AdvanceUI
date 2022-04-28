@@ -326,7 +326,7 @@ class _PostList extends StatelessWidget {
           itemCount: postsList.length,
           itemBuilder: (context, index) {
             final post = postsList[index];
-            return _PostItem(post: post, themeData: themeData);
+            return PostItem(post: post, themeData: themeData);
           },
         ),
       ],
@@ -334,8 +334,8 @@ class _PostList extends StatelessWidget {
   }
 }
 
-class _PostItem extends StatelessWidget {
-  const _PostItem({
+class PostItem extends StatelessWidget {
+  const PostItem({
     Key? key,
     required this.post,
     required this.themeData,
@@ -364,8 +364,9 @@ class _PostItem extends StatelessWidget {
         children: [
           ClipRRect(
               borderRadius: BorderRadius.circular(radius),
-              child:
-                  Image.asset('assets/img/posts/small/${post.imageFileName}')),
+              child: Image.asset(
+                'assets/img/posts/small/${post.imageFileName}',
+              )),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),

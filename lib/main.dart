@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
           onSurface: primaryTextColor,
           background: Color(0xfffBFBFF),
           onBackground: primaryTextColor,
+          primaryContainer: Color(0xff2151CD),
         ),
         primaryColor: primaryColor,
         appBarTheme: const AppBarTheme(
@@ -113,7 +114,35 @@ class MyApp extends StatelessWidget {
       //   ],
       // ),
 
-      home: const ProfileScreen(),
+      home: const MainScreen(),
+    );
+  }
+}
+
+class MainScreen extends StatelessWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      bottomNavigationBar: _BottomNavigation(),
+      body: IndexedStack(
+        index: 0,
+        children: [],
+      ),
+    );
+  }
+}
+
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text('Search Screen'),
+      ),
     );
   }
 }
