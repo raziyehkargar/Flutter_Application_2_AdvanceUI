@@ -132,37 +132,92 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int selectedTabIndex = homeIndex;
+  final List<int> _history = [];
+  final GlobalKey<NavigatorState> _homeKey = GlobalKey();
+  final GlobalKey<NavigatorState> _articleKey = GlobalKey();
+  final GlobalKey<NavigatorState> _searchKey = GlobalKey();
+  final GlobalKey<NavigatorState> _menuKey = GlobalKey();
+
+  late final mapScreen = {
+    homeIndex: _homeKey,
+    articleIndex: _articleKey,
+    searchIndex: _searchKey,
+    profileIndex: _menuKey
+  };
+
+  Future<bool> _onWillPop() async {
+    NavigatorState currentSelectedTabNavigatoreState =
+        mapScreen[selectedTabIndex]!.currentState!;
+    if (currentSelectedTabNavigatoreState.canPop()) {
+      currentSelectedTabNavigatoreState.pop();
+      return false;
+    } else if (_history.isNotEmpty) {
+      setState(() {
+        selectedTabIndex = _history.last;
+        _history.removeLast();
+      });
+
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            bottom: bottomNavigationHeight,
-            child: IndexedStack(
-              index: selectedTabIndex,
-              children: const [
-                HomeScreen(),
-                ArticleScreen(),
-                SearchScreen(),
-                ProfileScreen(),
-              ],
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Positioned.fill(
+              bottom: bottomNavigationHeight,
+              child: IndexedStack(
+                index: selectedTabIndex,
+                children: [
+                  Navigator(
+                    key: _homeKey,
+                    onGenerateRoute: (settings) => MaterialPageRoute(
+                      builder: (context) => const HomeScreen(),
+                    ),
+                  ),
+                  Navigator(
+                    key: _articleKey,
+                    onGenerateRoute: (settings) => MaterialPageRoute(
+                      builder: (context) => const ArticleScreen(),
+                    ),
+                  ),
+                  Navigator(
+                    key: _searchKey,
+                    onGenerateRoute: (settings) => MaterialPageRoute(
+                      builder: (context) => const SearchScreen(),
+                    ),
+                  ),
+                  Navigator(
+                    key: _menuKey,
+                    onGenerateRoute: (settings) => MaterialPageRoute(
+                      builder: (context) => const ProfileScreen(),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            left: 0,
-            child: _BottomNavigation(
-              onSelectedTab: (int index) {
-                setState(() {
-                  selectedTabIndex = index;
-                });
-              },
-              selectedIndex: selectedTabIndex,
-            ),
-          )
-        ],
+            Positioned(
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child: _BottomNavigation(
+                onSelectedTab: (int index) {
+                  setState(() {
+                    _history.remove(selectedTabIndex);
+                    _history.add(selectedTabIndex);
+                    selectedTabIndex = index;
+                  });
+                },
+                selectedIndex: selectedTabIndex,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
