@@ -3,7 +3,7 @@
 // throw new RuntimeException('lol')
 
 buildscript {    
-    ext.kotlin_version ='1.6.10' //'1.3.50'
+    ext.kotlin_version ='1.6.21' 
     repositories {
         google()
         mavenCentral()
@@ -16,10 +16,10 @@ buildscript {
 }
 
 // android {
-//     compileSdkPreview "31"
+//     compileSdkPreview "32"
 
 //     defaultConfig {
-//         targetSdkPreview "31"
+//         targetSdkPreview "32"
 //     }
 // }
 
