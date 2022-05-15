@@ -174,30 +174,22 @@ class _MainScreenState extends State<MainScreen> {
               child: IndexedStack(
                 index: selectedTabIndex,
                 children: [
-                  Navigator(
-                    key: _homeKey,
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                    ),
-                  ),
-                  Navigator(
-                    key: _articleKey,
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => const ArticleScreen(),
-                    ),
-                  ),
-                  Navigator(
-                    key: _searchKey,
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => const SearchScreen(),
-                    ),
-                  ),
-                  Navigator(
-                    key: _menuKey,
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => const ProfileScreen(),
-                    ),
-                  ),
+                  _navigator(
+                      key: _homeKey,
+                      index: homeIndex,
+                      child: const HomeScreen()),
+                  _navigator(
+                      key: _articleKey,
+                      index: articleIndex,
+                      child: const ArticleScreen()),
+                  _navigator(
+                      key: _searchKey,
+                      index: searchIndex,
+                      child: const SearchScreen()),
+                  _navigator(
+                      key: _menuKey,
+                      index: profileIndex,
+                      child: const ProfileScreen()),
                 ],
               ),
             ),
@@ -220,6 +212,18 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  Widget _navigator({GlobalKey? key, int? index, Widget? child}) {
+    return (key!.currentState == null && selectedTabIndex != index)
+        ? Container()
+        : Navigator(
+            key: key,
+            onGenerateRoute: (settings) => MaterialPageRoute(
+              builder: (context) =>
+                  Offstage(offstage: selectedTabIndex != index, child: child),
+            ),
+          );
   }
 }
 
